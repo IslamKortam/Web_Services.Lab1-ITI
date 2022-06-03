@@ -2,7 +2,7 @@ const express = require('express');
 require('./helpers/dbConnection');
 const bodyParser = require('body-parser');
 const { errorHandler } = require('./middlewares');
-const { User, Blog } = require('./models');
+const { Blog } = require('./models');
 const { getBlogsHateos } = require('./helpers/constants');
 const userRouter = require('./routes/usersRouter');
 const articleRouter = require('./routes/articleRouter');
