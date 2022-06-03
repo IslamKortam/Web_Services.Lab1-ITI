@@ -4,6 +4,7 @@ const userRouter = express.Router();
 const articleRouter = require('./articleRouter');
 const {User} = require('../models');
 const hateos = require('../helpers/constants');
+const { errors } = require('../helpers/errors');
 
 
 userRouter.get('/', async(req, res, next) => {
@@ -45,7 +46,7 @@ userRouter.param('user_id', async (req, res, next, userId) => {
     console.log('userID: ', userId);
     try {
         const user = await User.findById(userId);
-        if (!user) throw new Error('notfound');
+        if (!user) throw new errors.APP_ERR_NO_SUCH_USER;
         req.user = user;
     } catch (err) {
         return next(err);

@@ -1,4 +1,5 @@
 const express = require('express');
+const { CustomError, errors } = require('../helpers/errors');
 const { User, Article } = require('../models');
 const commentRouter = require('./commentRouter');
 
@@ -36,7 +37,7 @@ articleRouter.param('article_id', async (req, res, next) => {
         const article = await Article.findById(article_id);
         if(!article){
             //no such article
-            throw new Error('notfound');
+            throw new errors.APP_ERR_NO_SUCH_ARTICLE;
         }
         req.article = article;
         next();
@@ -70,7 +71,7 @@ articleRouter.post('/', async (req, res, next) => {
     try{
         const author = req.user;
         if(!author){
-            throw new Error('USER_ISNOT_SPICFIED');
+            throw new errors.APP_ERR_NO_SUCH_USER;
         }
         const userId = author._id;
         const {title, body, date} = req.body;

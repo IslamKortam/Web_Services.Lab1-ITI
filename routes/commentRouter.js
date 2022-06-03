@@ -1,4 +1,5 @@
 const express = require('express');
+const { errors } = require('../helpers/errors');
 const { Comment, Article } = require('../models');
 
 const commentRouter = express.Router();
@@ -7,7 +8,7 @@ commentRouter.post('/', async (req, res, next) => {
     try{
         const article = req.article;
         if(!article){
-            throw new Error('ARTICLE_NOT_SPICIFIED');
+            throw new errors.APP_ERR_MISSING_ARTICLE_ID;
         }
         const articleObj = await article.exec();
         const articleId = articleObj._id;
@@ -52,7 +53,7 @@ commentRouter.param('/:comment_id', async (req, res, next) => {
         const commentId = req.params.comment_id;
         const comment = await Comment.findById(commentId);
         if(!commentId){
-            throw new Error('COMMENT_NOT_FOUND');
+            throw new errors.APP_ERR_NO_SUCH_COMMENT;
         }
         req.comment = comment;
         next();
